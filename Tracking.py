@@ -23,6 +23,8 @@ print(I_gray.ravel)
 # plt.hist(f)
 # plt.show()
 
+# in addition
+
 
 '''
 temp=np.asarray(Image.open('map.jpeg'))
