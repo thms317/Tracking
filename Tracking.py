@@ -23,7 +23,7 @@ print(I_gray.ravel)
 # plt.hist(f)
 # plt.show()
 
-# in addition
+# in addition, here is some more
 
 
 '''
