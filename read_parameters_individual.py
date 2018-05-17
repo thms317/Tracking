@@ -11,15 +11,19 @@ f.close()
 for n, title in enumerate(titles):
     titles[n] = title.strip('\n')
 
-n_bead = []
-Z = []
-alpha = []
-beta = []
-gamma = []
 
+boxplot = []
+bead_height = []
 beads = 0
 
 for i in range(3,11):
+    bead_height.append(i)
+
+    n_bead = []
+    Z = []
+    alpha = []
+    beta = []
+    gamma = []
 
     parameters_files = "C:\\Users\\brouw\\Desktop\\FOV\\Fit Parameters\\"+str(i)+"\\"
     parameters_list = os.listdir(parameters_files)
@@ -49,6 +53,8 @@ for i in range(3,11):
             if parameter == 10:
                 gamma.append(float(par[parameter]))
 
+    boxplot.append(gamma)
+
 print("Number of fitted beads: " + str(beads))
 
 print(titles[1] + ": " + str(np.median(n_bead)) + " +\- " + str(round(np.std(n_bead),3)) + " (median)")
@@ -57,8 +63,9 @@ print(titles[6] + ": " + str(np.median(alpha)) + " +\- " + str(round(np.std(alph
 print(titles[7] + ": " + str(np.median(beta)) + " +\- " + str(round(np.std(beta),3)) + " (median)")
 print(titles[10] + ": " + str(np.median(gamma)) + " +\- " + str(round(np.std(gamma),3)) + " (median)")
 
-binwidth = 5
-data = gamma
-plt.hist(data,bins=np.arange(min(data), max(data) + binwidth, binwidth))
-plt.xlim(0,100)
+plt.boxplot(boxplot)
+plt.xticks(np.arange(len(boxplot))+1,bead_height)
+plt.xlabel("Bead height ($\\mu$m)")
+plt.ylabel("gamma")
+# plt.ylim(0,2)
 plt.show()
