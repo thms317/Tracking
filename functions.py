@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.signal import argrelextrema
 from scipy import stats
 
 kT = 4.114  # pN nm
@@ -7,7 +6,7 @@ L0 = 0.34  # nm / bp
 
 
 # worm-like chain
-def WLC(f, L_bp=1e3, P_nm=50, S_pN=1e3, z0_nm=0, HMf_cWLC = 0):
+def WLC(f, L_bp=1e3, P_nm=50, S_pN=1e3, z0_nm=0, HMf_cWLC=0):
     z = 1 - 0.5 * np.sqrt(kT / (f * P_nm)) + f / S_pN
     z *= L_bp * 0.34
     z += z0_nm
@@ -15,13 +14,14 @@ def WLC(f, L_bp=1e3, P_nm=50, S_pN=1e3, z0_nm=0, HMf_cWLC = 0):
     w = f * z - L_bp * L0 * (f - np.sqrt((f * kT) / P_nm) + f ** 2 / (2 * S_pN))
     return z, w / kT
 
+
 def WLC_fit(f, p, L, S, z0):
     kT = 4.114  # (pN nm) - Boltzmann factor
     return (L * (1 - 0.5 * (np.sqrt(kT / (f * p))) + f / S)) / 1000 + z0
 
 
 # freely jointed chain
-def FJC(f, b=None, k_pN_nm=0.01, L_nm=5, z0_nm=0, HMf_cFJC = 0):
+def FJC(f, b=None, k_pN_nm=0.01, L_nm=5, z0_nm=0, HMf_cFJC=0):
     if b == None:
         b = 3 * kT / (k_pN_nm * L_nm)
     x = f * b / kT
@@ -99,6 +99,9 @@ def reject_outliers(data):
 def get_num(x):
     return float(''.join(ele for ele in x if ele.isdigit() or ele == '.'))
 
+def get_int(string):
+    return int(''.join(x for x in string if x.isdigit()))
+
 
 def peak_finder(y):  # Finds y peaks at position x in xy graph
     y = np.array(y)
@@ -175,3 +178,49 @@ def drift_self(Z, time):
     t_end = np.percentile(time[-100:], 1)
     drift_slope, intercept, r_value, p_value, std_err = stats.linregress([t_start, t_end], [Z_start, Z_end])
     return drift_slope
+
+
+# calculate ruptures
+def rupture(time, amplitude, mask=False):
+    # calculating the first derivative of amplitude
+    dx = np.diff(time)
+    dy = np.diff(amplitude)
+    diff_amp = np.append([0], np.divide(dy, dx))
+
+    diff_amp -= np.mean(diff_amp)
+    std_diff_amp = abs(np.std(diff_amp))
+    peak = max(abs(diff_amp))
+
+    # classify as 'tether break' if absolute diff(amplitude) maximum exceeds n times the std
+    n = 10
+
+    if mask:
+        mask = np.ones(len(amplitude))
+        if peak > n * std_diff_amp:
+            peak_index = int(np.where(abs(diff_amp) == peak)[0])
+            average_before = np.mean(amplitude[:peak_index])
+            average_after = np.mean(amplitude[peak_index:])
+            mean_diff = abs(average_after - average_before)
+            if mean_diff > 2 * abs(np.std(amplitude)):
+                mask_on = np.ones(peak_index)
+                fuck_it_mask_off = np.zeros(len(amplitude) - peak_index)
+                mask = np.concatenate((mask_on, fuck_it_mask_off))
+                return True, mask
+            else:
+                return False, mask
+        else:
+            return False, mask
+
+
+    else:
+        if peak > n * std_diff_amp:
+            peak_index = int(np.where(abs(diff_amp) == peak)[0])
+            average_before = np.mean(amplitude[:peak_index])
+            average_after = np.mean(amplitude[peak_index:])
+            mean_diff = abs(average_after - average_before)
+            if mean_diff > 2 * abs(np.std(amplitude)):
+                return True
+            else:
+                return False
+        else:
+            return False
