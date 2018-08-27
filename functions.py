@@ -94,6 +94,36 @@ def reject_outliers(data):
         data_filtered.append(i)
     return data_filtered
 
+def sum_nan(data):
+    summable = []
+    for i in data:
+        bool = np.isnan(i)
+        if bool == False:
+            summable.append(i)
+    sum = np.sum(summable)
+
+    return sum
+
+def zero_nan(array):
+    array_new = []
+    for n, value in enumerate(array):
+        if value == 0:
+            array_new.append(np.inf)
+        else:
+            array_new.append(value)
+    return np.array(array_new)
+
+# function to plainly reject outliers
+def reject_outliers_plain(data,std=2):
+    data = np.array(data)
+    data_filtered = []
+    norm_data = abs(data - np.mean(data))
+    for n, i in enumerate(norm_data):
+        if i < std * np.std(data):
+            i = data[n]
+            data_filtered.append(i)
+    return data_filtered
+
 
 # get numbers from string
 def get_num(x):

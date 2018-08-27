@@ -9,7 +9,8 @@ import matplotlib.cm as cm
 correct_global_drift = True
 correct_reference_beads = False
 
-trackbin_path = "C:\\Users\\tbrouwer\\Desktop\\TrackBin test data\\"
+trackbin_path = "C:\\Users\\tbrouwer\\Desktop\\TrackBin Data\Data_004\CorrectedDat\\"
+save_path = "C:\\Users\\tbrouwer\\Desktop\\TrackBin Analysis\\AV\\"
 
 trackbin_files = []
 os.chdir(trackbin_path)
@@ -19,6 +20,8 @@ for file in glob.glob("*.dat"):
 A, B, matrix, matrix_overlapping = [], [], [], []
 
 for n, file in enumerate(trackbin_files):
+
+    print(file)
 
     # get reference-frequency
     A.append(file[10:13])
@@ -32,7 +35,7 @@ for n, file in enumerate(trackbin_files):
     headers = list(df)
 
     # get number of beads
-    beads = headers[len(headers) - 1]
+    beads = headers[len(headers) - 2]
     beads = func.get_int(beads)
 
     # correct global drift
@@ -74,7 +77,7 @@ for n, file in enumerate(trackbin_files):
         plt.xlabel("Time (s)")
         plt.ylabel("Extension ($\mu$m)")
         plt.title(file)
-        plt.savefig(trackbin_path+"timetrace_"+file[:-4])
+        plt.savefig(save_path+"timetrace_"+file[:-4]+"_"+str(bead))
         plt.close()
 
         # Allan Variance (Van Oene paper)
@@ -86,7 +89,7 @@ for n, file in enumerate(trackbin_files):
 
         AV_test, m_x = [], []
 
-        octave = True
+        octave = False
 
         for i in range(int(N / 2)):
             if octave == True:
@@ -157,18 +160,18 @@ for n, file in enumerate(trackbin_files):
     plt.ylim(-0.0001,0.001)
     plt.legend()
     if octave == True:
-        plt.savefig(trackbin_path+"octave_"+file[:-4])
+        plt.savefig(save_path+"octave_"+file[:-4])
     else:
-        plt.savefig(trackbin_path+"linear_"+file[:-4])
+        plt.savefig(save_path+"linear_"+file[:-4])
     plt.close()
 
     AV_data = np.array(AV_data)
     AV_data = np.transpose(np.vstack([m_x, AV_data]))
 
     if octave:
-        np.savetxt(trackbin_path+"AVdata_octave_"+file[:-4]+".txt",AV_data)
+        np.savetxt(save_path+"AVdata_octave_"+file[:-4]+".txt",AV_data)
     else:
-        np.savetxt(trackbin_path + "AVdata_lin_" + file[:-4]+".txt", AV_data)
+        np.savetxt(save_path + "AVdata_lin_" + file[:-4]+".txt", AV_data)
 
 
 
