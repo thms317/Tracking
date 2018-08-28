@@ -124,6 +124,12 @@ def reject_outliers_plain(data,std=2):
             data_filtered.append(i)
     return data_filtered
 
+# reject inf
+def reject_inf(data):
+    data = np.array(data)
+    data = data[data < 1E308]
+    return data
+
 
 # get numbers from string
 def get_num(x):

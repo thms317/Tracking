@@ -10,9 +10,9 @@ import matplotlib.cm as cm
 
 correct_global_drift = True
 
-trackbin_path = "C:\\Users\\tbrouwer\\Desktop\\TrackBin Data\Data_004\CorrectedDat\\"
+trackbin_path = "C:\\Users\\tbrouwer\\Desktop\\TrackBin Data\Data_003\CorrectedDat\\"
 save_path = "C:\\Users\\tbrouwer\\Desktop\\TrackBin Analysis\\"
-title = "Data_004"
+title = "Data_003"
 
 trackbin_files = []
 os.chdir(trackbin_path)
@@ -142,17 +142,21 @@ for n, file in enumerate(trackbin_files):
 
     matrix.append(dZ_int_med)
 
+np.savetxt(save_path + title + "_1D_matrix_segmented.txt", submatrix)
+
 freqsA = len(np.unique(A))
 freqsB = len(np.unique(B))
 
 A = np.array(A).astype(np.float)
 B = np.array(B).astype(np.float)
 
-nan = np.nan
-submatrix = np.array(submatrix).reshape(files,beads)
+submatrix = np.array(submatrix).astype(float)
+submatrix = submatrix.flatten()
+submatrix = submatrix.reshape(files,beads)
 
+AB = np.vstack([A,B]).T
+submatrix_XYZ = np.hstack([AB,submatrix]).T
 matrix_XYZ = np.transpose(np.vstack([A,B,matrix]))
-submatrix_XYZ = np.transpose(np.vstack([A,B,submatrix]))
 
 np.savetxt(save_path + title + "_matrix_XYZ_segmented_cummulative.txt", matrix_XYZ)
 np.savetxt(save_path + title + "_matrix_XYZ_segmented.txt", submatrix_XYZ)

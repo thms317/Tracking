@@ -94,3 +94,4 @@ n = 288
 beads = 14
 submatrix = np.array(a).reshape(n+1,beads)
 print(submatrix)
+
