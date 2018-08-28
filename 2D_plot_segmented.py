@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 import functions as func
 
 # open 2D array
-folder = "C:\\Users\\tbrouwer\\Desktop\\TrackBin Analysis\\"
-file = "Data_004_matrix_XYZ_segmented.txt"
-save_folder = "C:\\Users\\tbrouwer\\Desktop\\2D plot\\"
-title = "dZ_global"
+folder = "C:\\Users\\brouw\\Desktop\\2D plots\\"
+file = "Data_002_matrix_XYZ_segmented.txt"
+save_folder = "C:\\Users\\brouw\\Desktop\\2D plots\\"
+title = "dZ_segmented"
 
 with open(folder+file, 'r') as f:
     lines = f.read().splitlines()
@@ -47,7 +47,7 @@ for bead in range(beads):
     # B1 = X[min2[1]]
     # print("Lowest value at: A = "+str(A1)+", B = "+str(B1)+", value = " +str(Z.min()))
 
-    optimum.append([A1,B1])
+    # optimum.append([A1,B1])
 
     # scale individually
     # vmin = abs(Z).min()

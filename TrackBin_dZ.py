@@ -81,7 +81,7 @@ for n, file in enumerate(trackbin_files):
         plt.ylabel("Extension ($\mu$m)")
         plt.title(file+" - corrected DAT")
 
-        dZ_tot.append(np.percentile(Z,99)-np.percentile(Z,1))
+        dZ_tot.append(np.std(Z))
 
         # Splitting the data
         N = len(time)  # total number of datapoints
