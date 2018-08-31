@@ -10,9 +10,9 @@ import matplotlib.cm as cm
 
 correct_global_drift = True
 
-trackbin_path = "C:\\Users\\tbrouwer\\Desktop\\TrackBin Data\Data_003\CorrectedDat\\"
-save_path = "C:\\Users\\tbrouwer\\Desktop\\TrackBin Analysis\\"
-title = "Data_003"
+trackbin_path = "C:\\Users\\tbrouwer\\Desktop\\TrackBin Data\\Data_004_high-accuracy_no_average_phase\\CorrectedDat\\"
+save_path = "C:\\Users\\tbrouwer\\Desktop\\TrackBin Analysis\\High accuracy (no averaging AB)\\"
+title = "Data_004_high-accuracy_no_average_AB"
 
 trackbin_files = []
 os.chdir(trackbin_path)
@@ -101,6 +101,9 @@ for n, file in enumerate(trackbin_files):
             # plt.figure(1)
             # plt.scatter(time_int,Z_int,color=next(colors_segments))
 
+        # plt.title("Segmented Timetrace")
+        # plt.xlabel("Time (s)")
+        # plt.ylabel("Z (um)")
         # plt.show()
 
         dZ_int = np.sort(dZ_int)

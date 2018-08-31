@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 import functions as func
 
 # open 2D array
-folder = "C:\\Users\\brouw\\Desktop\\2D plots\\"
-file = "Data_002_matrix_XYZ_segmented.txt"
-save_folder = "C:\\Users\\brouw\\Desktop\\2D plots\\"
-title = "dZ_segmented"
+folder = "C:\\Users\\tbrouwer\\Desktop\\TrackBin Analysis\\\High accuracy (no averaging AB)\\"
+file = "Data_004_high-accuracy_no_average_AB_matrix_XYZ_segmented.txt"
+save_folder = "C:\\Users\\tbrouwer\\Desktop\\2D plots\\"
+title = "dZ_segmented_high_accuracy (no averaging AB)"
 
 with open(folder+file, 'r') as f:
     lines = f.read().splitlines()
@@ -23,7 +23,7 @@ matrix = np.array(matrix).astype(np.float)
 beads = len(matrix) - 2
 
 # reference freqs
-X = np.arange(7,15.5,0.5)
+X = np.arange(7,12.1,0.1)
 Y = X
 
 # build meshgrid
@@ -76,8 +76,8 @@ for bead in range(beads):
     plt.ylabel("Reference frequency B (pix)")
     plt.title(file[:8]+" - bead "+str(bead))
 
-    plt.xlim(7,15)
-    plt.ylim(7,15)
+    plt.xlim(7,12)
+    plt.ylim(7,12)
     bead -=2 # reverse the correction
 
     plt.savefig(save_folder+"segmented_"+title+"_"+file[:8]+'_'+str(bead))
