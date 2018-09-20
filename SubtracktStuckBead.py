@@ -27,7 +27,7 @@ from scipy import signal
 
 plt.close()
 
-folder = "C:\\Users\\tbrouwer\\Desktop\\TrackBin Data\\Data_003\\"
+folder = "C:\\Users\\tbrouwer\\Desktop\\TrackBin Data\\Data_004_high-accuracy\\"
 newpath = folder + "\\CorrectedDat\\"
 if not os.path.exists(newpath):
     os.makedirs(newpath)
