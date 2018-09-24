@@ -7,7 +7,7 @@ import pandas as pd
 import matplotlib.cm as cm
 
 
-data_path = r"C:\Users\brouw\Desktop\Data\180824_images\post-processing\data_002"
+data_path = r"C:\Users\tbrouwer\Desktop\TrackImages\post-processing\data_002"
 save_path = data_path
 
 dat_files = []
@@ -29,12 +29,13 @@ for n, file in enumerate(dat_files):
 
     # get number of beads
     beads = headers[len(headers) - 2]
-    beads = func.get_int(beads)
+    beads = func.get_int(beads) + 1
 
     # correct global drift
     time = np.array(df['Time (s)'])
     freq = 1 / np.median(np.diff(time))
 
+    print(beads)
 
     drift = []
     for i in range(beads):
@@ -55,7 +56,7 @@ for n, file in enumerate(dat_files):
     drift = float(np.median(drift))
 
     print("Processing file: " + str(file) + " (drift: " + str(round(drift, 2)) + " nm/s), number of freqs: " + str(freqs))
-    '''
+    
 
     AV_data = []
     for bead in range(beads):
