@@ -2,7 +2,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-folder = "S:\\Brouwer\\Camera Noise\\"
+# folder = "S:\\Brouwer\\Camera Noise\\"
+folder = "C:\\Users\\brouw\\Desktop\\"
 file = "noise_double.txt"
 
 df = pd.read_csv(folder+file, sep="\t")
