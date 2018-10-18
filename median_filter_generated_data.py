@@ -5,6 +5,9 @@ from scipy.signal import medfilt
 import os
 
 folder = "C:\\Users\\brouw\\Google Drive\\Bead images\\Generated Data\\testing\\"
+folder = "C:\\Users\\Tbrouwer.BF15\\Google Drive\\Bead images\\Generated Data\\5s\\"
+folder = "C:\\Users\\Tbrouwer.BF15\\Google Drive\\Bead images\\Generated Data\\20s\\"
+folder = "C:\\Users\\Tbrouwer.BF15\\Google Drive\\Bead images\\Generated Data\\noiseless\\"
 files = os.listdir(folder)
 
 for file in files:
@@ -15,6 +18,7 @@ for file in files:
     traject = np.array(df['Traject (um)'])
 
     offset = np.median(Z[0:30])
+    # offset = np.median(Z[0:600])
     Z-=offset
     Z*=1000
     Z_med = medfilt(Z,31)
@@ -24,9 +28,10 @@ for file in files:
     traject*=1000
 
     plt.title(file)
-    plt.plot(time, Z, 'o-')
-    plt.plot(time,Z_med,color='red')
-    plt.plot(time,traject)
+    plt.plot(time, Z, '-', color='lightgrey')
+    plt.plot(time,Z_med,color='red', linewidth=3)
+    plt.plot(time,traject, color='navy', linewidth=3)
+
     plt.ylabel("Z (nm)")
     plt.xlabel("Time (s)")
     plt.show()

@@ -24,14 +24,22 @@ from numpy import genfromtxt
 import csv
 import os
 from scipy import signal
+from shutil import copyfile
 
 plt.close()
 
-folder = "C:\\Users\\tbrouwer\\Desktop\\TrackBin Data\\Data_004_high-accuracy\\"
-newpath = folder + "\\CorrectedDat\\"
-if not os.path.exists(newpath):
-    os.makedirs(newpath)
+copy_uncorrected = True
 
+folder = "C:\\Users\\tbrouwer\\Desktop\\Data\\181016\\"
+newpath = folder + "\\CorrectedDat\\"
+uncorrected_path = folder + "\\UnCorrectedDat\\"
+
+if copy_uncorrected:
+    if not os.path.exists(uncorrected_path):
+        os.makedirs(uncorrected_path)
+else:
+    if not os.path.exists(newpath):
+        os.makedirs(newpath)
 
 # %%
 ###############################################################################
@@ -149,13 +157,30 @@ for Filenum, DatFile in enumerate(Filenames):
         plt.scatter(T, data[:, headers.index('Z' + str(int(i)) + ' (um)')], alpha=0.5, label=str(i), lw=0)
         # plt.scatter(T,data_original[:,headers.index('Z'+str(int(i))+' (um)')], alpha=0.5, label=str(i), lw=0, color=plt.cm.cool(i))
     plt.legend(loc='best')
-    plt.savefig(newpath + '\\' + DatFile[:-4] + '.png')
+    if copy_uncorrected:
+        plt.savefig(folder + DatFile[:-4] + '_corrected.png')
+    else:
+        plt.savefig(newpath + '\\' + DatFile[:-4] + '_corrected.png')
     # plt.show()
     plt.close()
 
-    with open(newpath + '\\' + DatFile, 'w') as outfile:  # writes new .dat file
-        writer = csv.writer(outfile, delimiter='\t', lineterminator="\n")
-        headers[len(headers) - 1] = "Amp a.u."
-        data = np.vstack([np.array(headers), data])
-        for row in data:
-            writer.writerow(row)
+    if copy_uncorrected:
+
+        src = folder + DatFile  # source
+        dst = uncorrected_path + DatFile  # destination
+        copyfile(src,dst)
+
+        with open(folder + DatFile, 'w') as outfile:  # writes new .dat file
+            writer = csv.writer(outfile, delimiter='\t', lineterminator="\n")
+            headers[len(headers) - 1] = "Amp a.u."
+            data = np.vstack([np.array(headers), data])
+            for row in data:
+                writer.writerow(row)
+
+    else:
+        with open(newpath + '\\' + DatFile, 'w') as outfile:  # writes new .dat file
+            writer = csv.writer(outfile, delimiter='\t', lineterminator="\n")
+            headers[len(headers) - 1] = "Amp a.u."
+            data = np.vstack([np.array(headers), data])
+            for row in data:
+                writer.writerow(row)
