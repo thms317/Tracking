@@ -30,7 +30,7 @@ plt.close()
 
 copy_uncorrected = True
 
-folder = "C:\\Users\\tbrouwer\\Desktop\\Data\\181016\\"
+folder = "C:\\Users\\brouw\\Desktop\\Data\\181017\\"
 newpath = folder + "\\CorrectedDat\\"
 uncorrected_path = folder + "\\UnCorrectedDat\\"
 
